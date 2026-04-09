@@ -1,10 +1,12 @@
 package com.papis.gymtracker.model;
 
+import com.papis.gymtracker.model.enums.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -21,19 +23,19 @@ public class Exercise {
 
     @Column(name = "force_type")
     @Enumerated(EnumType.STRING)
-    private String force;
+    private Force force;
 
     @Enumerated(EnumType.STRING)
-    private String level;
+    private Level level;
 
     @Enumerated(EnumType.STRING)
-    private String mechanic;
+    private Mechanic mechanic;
 
     @Enumerated(EnumType.STRING)
-    private String equipment;
+    private Equipment equipment;
 
     @Enumerated(EnumType.STRING)
-    private String category;
+    private Category category;
 
     @ManyToMany
     @JoinTable(
@@ -41,7 +43,7 @@ public class Exercise {
             joinColumns = @JoinColumn(name = "exercise_id"),
             inverseJoinColumns = @JoinColumn(name = "muscle_group_id")
     )
-    private Set<MuscleGroup> primaryMuscles;
+    private Set<MuscleGroup> primaryMuscles = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
@@ -49,6 +51,6 @@ public class Exercise {
             joinColumns = @JoinColumn(name = "exercise_id"),
             inverseJoinColumns = @JoinColumn(name = "muscle_group_id")
     )
-    private Set<MuscleGroup> secondaryMuscles;
+    private Set<MuscleGroup> secondaryMuscles = new HashSet<>();
 
 }
