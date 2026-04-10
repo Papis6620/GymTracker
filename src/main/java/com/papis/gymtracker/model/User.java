@@ -29,7 +29,7 @@ public class User implements UserDetails {
     private String password;
 
     @Column(nullable = false)
-    private String username;
+    private String displayName;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
