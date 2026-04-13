@@ -8,7 +8,6 @@ import java.util.List;
 
 @Repository
 public interface WorkoutEntryRepository extends JpaRepository<WorkoutEntry, Long> {
-    List<WorkoutEntry> findBySessionUserId(Long workoutSessionId);
-    List<WorkoutEntry> findByExerciseIdAndSessionUserId(String exerciseId, Long userId);
+    List<WorkoutEntry> findByExerciseIdAndSessionUserIdOrderBySessionSessionDateAsc(String exerciseId, Long userId);
 
 }
