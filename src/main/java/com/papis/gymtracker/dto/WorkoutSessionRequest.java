@@ -1,4 +1,9 @@
 package com.papis.gymtracker.dto;
 
-public class WorkoutSessionRequest {
-}
+import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
+
+public record WorkoutSessionRequest(
+        @NotNull LocalDate sessionDate,
+        String notes
+){}
