@@ -10,6 +10,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,5 +30,18 @@ public class PersonalRecordService {
 
         List<WorkoutEntry> entries = workoutEntryRepository.findByExerciseIdAndSessionUserId(exerciseId, user.getId());
         return PersonalRecordResponse.from(entries);
+    }
+
+    public List<PersonalRecordResponse> getAllRecords(){
+        User user = getCurrentUser();
+        return workoutEntryRepository.
+                findBySessionUserId(user.getId())
+                .stream()
+                .collect(Collectors.groupingBy(entry -> entry.getExercise().getId()))
+                .values()
+                .stream()
+                .map(PersonalRecordResponse::from)
+                .filter(Objects::nonNull)
+                .toList();
     }
 }
