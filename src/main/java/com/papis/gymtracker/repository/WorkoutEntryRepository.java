@@ -10,4 +10,5 @@ import java.util.List;
 public interface WorkoutEntryRepository extends JpaRepository<WorkoutEntry, Long> {
     List<WorkoutEntry> findByExerciseIdAndSessionUserIdOrderBySessionSessionDateAsc(String exerciseId, Long userId);
     List<WorkoutEntry> findByExerciseIdAndSessionUserId(String exerciseId, Long id);
+    List<WorkoutEntry> findBySessionUserId(Long userId);
 }
