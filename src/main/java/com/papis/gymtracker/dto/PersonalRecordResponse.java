@@ -12,6 +12,8 @@ public record PersonalRecordResponse(
         String exerciseName,
         BigDecimal estimated1RM,
         BigDecimal bestVolumeKg,
+        BigDecimal bestVolumeWeightInSet,
+        Integer bestVolumeReps,
         LocalDate achievedOnBestVolume
 ) {
     public static PersonalRecordResponse from(List<WorkoutEntry> entries){
@@ -50,6 +52,8 @@ public record PersonalRecordResponse(
                 best1RMEntry.getExercise().getName(),
                 best1RM.setScale(2, RoundingMode.HALF_UP),
                 bestVolume.setScale(2, RoundingMode.HALF_UP),
+                bestVolumeEntry.getWeightKg(),
+                bestVolumeEntry.getReps(),
                 bestVolumeEntry.getSession().getSessionDate()
         );
     }
