@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/records")
 @RequiredArgsConstructor
@@ -20,5 +22,10 @@ public class PersonalRecordController {
             @PathVariable String exerciseId
     ){
         return ResponseEntity.ok(personalRecordService.getExerciseRecord(exerciseId));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PersonalRecordResponse>> getAllRecords(){
+        return ResponseEntity.ok(personalRecordService.getAllRecords());
     }
 }
