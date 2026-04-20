@@ -2,10 +2,8 @@ package com.papis.gymtracker.service;
 
 import com.papis.gymtracker.dto.ProgressResponse;
 import com.papis.gymtracker.model.User;
-import com.papis.gymtracker.repository.UserRepository;
 import com.papis.gymtracker.repository.WorkoutEntryRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,12 +12,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProgressService {
     private final WorkoutEntryRepository workoutEntryRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     public List<ProgressResponse> getExerciseProgress(String exerciseId){
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userService.getCurrentUser();
 
         return workoutEntryRepository.findByExerciseIdAndSessionUserIdOrderBySessionSessionDateAsc(exerciseId, user.getId())
                 .stream()

@@ -8,11 +8,9 @@ import com.papis.gymtracker.model.User;
 import com.papis.gymtracker.model.WorkoutEntry;
 import com.papis.gymtracker.model.WorkoutSession;
 import com.papis.gymtracker.repository.ExerciseRepository;
-import com.papis.gymtracker.repository.UserRepository;
 import com.papis.gymtracker.repository.WorkoutEntryRepository;
 import com.papis.gymtracker.repository.WorkoutSessionRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,16 +21,10 @@ public class WorkoutService {
     private final WorkoutSessionRepository workoutSessionRepository;
     private final WorkoutEntryRepository workoutEntryRepository;
     private final ExerciseRepository exerciseRepository;
-    private final UserRepository userRepository;
-
-    private User getCurrentUser(){
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-    }
+    private final UserService userService;
 
     public WorkoutSessionResponse createWorkoutSession(WorkoutSessionRequest request){
-        User user = getCurrentUser();
+        User user = userService.getCurrentUser();
 
         WorkoutSession session = WorkoutSession.builder()
                         .user(user)
@@ -45,7 +37,7 @@ public class WorkoutService {
     }
 
     public WorkoutSessionResponse addEntry(Long sessionId, WorkoutEntryRequest request){
-        User user = getCurrentUser();
+        User user = userService.getCurrentUser();
         WorkoutSession session = workoutSessionRepository.findById(sessionId)
                 .orElseThrow(() -> new RuntimeException("Session not found"));
 
@@ -69,7 +61,7 @@ public class WorkoutService {
     }
 
     public List<WorkoutSessionResponse> getUserSessions(){
-        User user = getCurrentUser();
+        User user = userService.getCurrentUser();
         return workoutSessionRepository.findByUserId(user.getId())
                 .stream()
                 .map(WorkoutSessionResponse::from)
