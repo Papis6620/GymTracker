@@ -65,7 +65,7 @@ Authorization: Bearer <token>
 Protected endpoints require `Authorization: Bearer <token>`.
 
 ## Roadmap
-- [x] Personal records — automatically track best set per exercise
+- :white_check_mark: Personal records — automatically track best set per exercise
 - [x] User profile - update user details, delete account
 - [ ] Add missing Workout operations: update, delete
 - [ ] Error handling - global exception handling
