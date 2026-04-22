@@ -45,24 +45,32 @@ Authorization: Bearer <token>
 
 ## Endpoints
 
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| POST | `/api/v1/auth/register` | No | Register |
-| POST | `/api/v1/auth/login` | No | Login, returns JWT |
-| GET | `/api/v1/exercises` | No | List exercises (filterable by `muscle`, `level`, `category`, `equipment`) |
-| GET | `/api/v1/exercises/{id}` | No | Get exercise by ID |
-| GET | `/api/v1/workouts` | Yes | Get user's workout sessions |
-| POST | `/api/v1/workouts` | Yes | Create workout session |
-| POST | `/api/v1/workouts/{id}/entries` | Yes | Add exercise entry to session |
-| GET | `/api/v1/progress/{exerciseId}` | Yes | Get progress history for an exercise |
+| Method | Path                            | Auth | Description                                                               |
+|--------|---------------------------------|------|---------------------------------------------------------------------------|
+| POST   | `/api/v1/auth/register`         | No | Register                                                                  |
+| POST   | `/api/v1/auth/login`            | No | Login, returns JWT                                                        |
+| GET    | `/api/v1/exercises`             | No | List exercises (filterable by `muscle`, `level`, `category`, `equipment`) |
+| GET    | `/api/v1/exercises/{id}`        | No | Get exercise by ID                                                        |
+| GET    | `/api/v1/workouts`              | Yes | Get user's workout sessions                                               |
+| POST   | `/api/v1/workouts`              | Yes | Create workout session                                                    |
+| POST   | `/api/v1/workouts/{id}/entries` | Yes | Add exercise entry to session                                             |
+| GET    | `/api/v1/progress/{exerciseId}` | Yes | Get progress history for an exercise                                      |
+| GET    | `/api/v1/records`               | Yes | Get personal records for all exercises                                    |
+| GET    | `/api/v1/records/{exerciseId}`  | Yes | Get personal records for a specific exercise                              |
+| GET    | `api/v1/users/me`               | Yes | Get user details                                                          |
+| PUT    | `api/v1/users/me`               | Yes | Change your profile                                                       |
+| PUT    | `api/v1/user/me/password`       | Yes | Change password                                                           |
+| DELETE | `api/v1/users/me`               | Yes | Delete account                                                            |
 
 Protected endpoints require `Authorization: Bearer <token>`.
 
 ## Roadmap
-
+- [x] Personal records — automatically track best set per exercise
+- [x] User profile - update user details, delete account
+- [ ] Add missing Workout operations: update, delete
+- [ ] Error handling - global exception handling
 - [ ] Pagination for exercises and workout history
 - [ ] Workout templates (save and reuse a session structure)
-- [ ] Personal records — automatically track best set per exercise
 - [ ] Exercise instructions and images stored and exposed via the API
 - [ ] Frontend client (React or mobile app)
 
