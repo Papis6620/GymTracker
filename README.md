@@ -61,10 +61,10 @@ Authorization: Bearer <token>
 | GET     | `/api/v1/progress/{exerciseId}`             | Yes | Get progress history for an exercise                                      |
 | GET     | `/api/v1/records`                           | Yes | Get personal records for all exercises                                    |
 | GET     | `/api/v1/records/{exerciseId}`              | Yes | Get personal records for a specific exercise                              |
-| GET     | `api/v1/users/me`                           | Yes | Get user details                                                          |
-| PUT     | `api/v1/users/me`                           | Yes | Change your profile                                                       |
-| PUT     | `api/v1/user/me/password`                   | Yes | Change password                                                           |
-| DELETE  | `api/v1/users/me`                           | Yes | Delete account                                                            |
+| GET     | `/api/v1/users/me`                          | Yes | Get user details                                                          |
+| PUT     | `/api/v1/users/me`                          | Yes | Change your profile                                                       |
+| PUT     | `/api/v1/user/me/password`                  | Yes | Change password                                                           |
+| DELETE  | `/api/v1/users/me`                          | Yes | Delete account                                                            |
 
 Protected endpoints require `Authorization: Bearer <token>`.
 
