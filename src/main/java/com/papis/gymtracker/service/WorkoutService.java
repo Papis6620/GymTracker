@@ -10,6 +10,7 @@ import com.papis.gymtracker.model.WorkoutSession;
 import com.papis.gymtracker.repository.ExerciseRepository;
 import com.papis.gymtracker.repository.WorkoutEntryRepository;
 import com.papis.gymtracker.repository.WorkoutSessionRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -67,4 +68,58 @@ public class WorkoutService {
                 .map(WorkoutSessionResponse::from)
                 .toList();
     }
+
+    public WorkoutSessionResponse getSessionById(Long id){
+        User user = userService.getCurrentUser();
+
+        return workoutSessionRepository.findByUserIdAndId(user.getId(), id)
+                .map(WorkoutSessionResponse::from)
+                .orElseThrow(() -> new RuntimeException("Session not found"));
+    }
+
+    @Transactional
+    public void deleteSession(Long id){
+        User user = userService.getCurrentUser();
+
+        int count = workoutSessionRepository.deleteByUserIdAndId(user.getId(), id);
+        if(count == 0){
+            throw new RuntimeException("Session not found");
+        }
+    }
+
+    @Transactional
+    public void deleteEntry(Long sessionId, Long entryId){
+        User user = userService.getCurrentUser();
+
+        WorkoutSession session = workoutSessionRepository.findByUserIdAndId(user.getId(), sessionId)
+                .orElseThrow(() -> new RuntimeException("Session not found"));
+
+        int count = workoutEntryRepository.deleteByIdAndSessionId(entryId, session.getId());
+
+        if(count == 0){
+            throw new RuntimeException("Entry not found");
+        }
+    }
+
+    public WorkoutSessionResponse updateWorkoutEntry(Long sessionId, Long entryId, WorkoutEntryRequest request){
+        User user = userService.getCurrentUser();
+
+        WorkoutSession session = workoutSessionRepository.findByUserIdAndId(user.getId(), sessionId)
+                .orElseThrow(() -> new RuntimeException("Session not found"));
+
+        WorkoutEntry entry = workoutEntryRepository.findById(entryId)
+                .orElseThrow(() -> new RuntimeException("Entry not found"));
+
+        if(!entry.getSession().getId().equals(session.getId())){
+            throw new RuntimeException("You are not authorized to update this entry");
+        }
+
+        entry.setSets(request.sets());
+        entry.setReps(request.reps());
+        entry.setWeightKg(request.weightKg());
+        workoutEntryRepository.save(entry);
+
+        return WorkoutSessionResponse.from(session);
+    }
+
 }
