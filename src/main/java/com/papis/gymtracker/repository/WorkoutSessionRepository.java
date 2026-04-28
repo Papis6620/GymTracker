@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface WorkoutSessionRepository extends JpaRepository<WorkoutSession, Long> {
     List<WorkoutSession> findByUserId(Long userId);
     Optional<WorkoutSession> findByIdAndSessionDate(Long userId, LocalDate date);
+    Optional<WorkoutSession> findByUserIdAndId(Long userId, Long id);
+    int deleteByUserIdAndId(Long userId, Long id);
 }
