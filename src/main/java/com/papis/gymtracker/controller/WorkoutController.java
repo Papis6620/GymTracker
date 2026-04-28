@@ -42,4 +42,37 @@ public class WorkoutController {
     public ResponseEntity<List<WorkoutSessionResponse>> getUserSessions(){
         return ResponseEntity.ok(workoutService.getUserSessions());
     }
+
+    @GetMapping("/{sessionId}")
+    public ResponseEntity<WorkoutSessionResponse> getSessionById(
+            @PathVariable Long sessionId
+    ){
+        return ResponseEntity.ok(workoutService.getSessionById(sessionId));
+    }
+
+    @DeleteMapping("/{sessionId}")
+    public ResponseEntity<Void> deleteSession(
+            @PathVariable Long sessionId
+    ){
+        workoutService.deleteSession(sessionId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{sessionId}/entries/{entryId}")
+    public ResponseEntity<Void> deleteEntry(
+            @PathVariable Long sessionId,
+            @PathVariable Long entryId
+    ){
+        workoutService.deleteEntry(sessionId, entryId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{sessionId}/entries/{entryId}")
+    public ResponseEntity<WorkoutSessionResponse> updateEntry(
+            @PathVariable Long sessionId,
+            @PathVariable Long entryId,
+            @Valid @RequestBody WorkoutEntryRequest request
+    ){
+        return ResponseEntity.ok(workoutService.updateWorkoutEntry(sessionId, entryId, request));
+    }
 }
