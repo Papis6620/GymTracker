@@ -32,7 +32,7 @@ public class UserService {
         if(!passwordEncoder.matches(request.currentPassword(), user.getPassword())){
             throw new RuntimeException("Current password is incorrect");
         }
-        user.setPassword(passwordEncoder.encode(request.currentPassword()));
+        user.setPassword(passwordEncoder.encode(request.newPassword()));
         userRepository.save(user);
     }
 
