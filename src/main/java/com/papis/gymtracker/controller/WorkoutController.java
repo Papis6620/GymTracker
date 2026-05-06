@@ -39,15 +39,15 @@ public class WorkoutController {
     }
 
     @GetMapping
-    public ResponseEntity<List<WorkoutSessionResponse>> getUserSessions(){
-        return ResponseEntity.ok(workoutService.getUserSessions());
+    public List<WorkoutSessionResponse> getUserSessions(){
+        return workoutService.getUserSessions();
     }
 
     @GetMapping("/{sessionId}")
-    public ResponseEntity<WorkoutSessionResponse> getSessionById(
+    public WorkoutSessionResponse getSessionById(
             @PathVariable Long sessionId
     ){
-        return ResponseEntity.ok(workoutService.getSessionById(sessionId));
+        return workoutService.getSessionById(sessionId);
     }
 
     @DeleteMapping("/{sessionId}")
@@ -68,11 +68,11 @@ public class WorkoutController {
     }
 
     @PutMapping("/{sessionId}/entries/{entryId}")
-    public ResponseEntity<WorkoutSessionResponse> updateEntry(
+    public WorkoutSessionResponse updateEntry(
             @PathVariable Long sessionId,
             @PathVariable Long entryId,
             @Valid @RequestBody WorkoutEntryRequest request
     ){
-        return ResponseEntity.ok(workoutService.updateWorkoutEntry(sessionId, entryId, request));
+        return workoutService.updateWorkoutEntry(sessionId, entryId, request);
     }
 }

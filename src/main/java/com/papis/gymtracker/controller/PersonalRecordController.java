@@ -18,14 +18,14 @@ public class PersonalRecordController {
     private final PersonalRecordService personalRecordService;
 
     @GetMapping("/{exerciseId}")
-    public ResponseEntity<PersonalRecordResponse> getExerciseRecord(
+    public PersonalRecordResponse getExerciseRecord(
             @PathVariable String exerciseId
     ){
-        return ResponseEntity.ok(personalRecordService.getExerciseRecord(exerciseId));
+        return personalRecordService.getExerciseRecord(exerciseId);
     }
 
     @GetMapping
-    public ResponseEntity<List<PersonalRecordResponse>> getAllRecords(){
-        return ResponseEntity.ok(personalRecordService.getAllRecords());
+    public List<PersonalRecordResponse> getAllRecords(){
+        return personalRecordService.getAllRecords();
     }
 }

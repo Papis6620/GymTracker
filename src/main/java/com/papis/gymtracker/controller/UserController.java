@@ -16,15 +16,15 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/me")
-    public ResponseEntity<UserProfileResponse> getProfile(){
-        return ResponseEntity.ok(UserProfileResponse.from(userService.getCurrentUser()));
+    public UserProfileResponse getProfile(){
+        return UserProfileResponse.from(userService.getCurrentUser());
     }
 
     @PutMapping("/me")
-    public ResponseEntity<UserProfileResponse> updateProfile(
+    public UserProfileResponse updateProfile(
             @Valid @RequestBody UpdateProfileRequest request
     ){
-        return ResponseEntity.ok(UserProfileResponse.from(userService.updateDisplayName(request)));
+        return UserProfileResponse.from(userService.updateDisplayName(request));
     }
 
     @PutMapping("/me/password")
