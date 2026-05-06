@@ -72,7 +72,7 @@ Protected endpoints require `Authorization: Bearer <token>`.
 - [x] Personal records — automatically track best set per exercise
 - [x] User profile - update user details, delete account
 - [x] Add missing Workout operations: update, delete
-- [ ] Error handling - global exception handling
+- [x] Error handling - global exception handling
 - [ ] Pagination for exercises and workout history
 - [ ] Workout templates (save and reuse a session structure)
 - [ ] Exercise instructions and images stored and exposed via the API
