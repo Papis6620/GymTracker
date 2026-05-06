@@ -3,6 +3,8 @@ package com.papis.gymtracker.service;
 import com.papis.gymtracker.dto.WorkoutEntryRequest;
 import com.papis.gymtracker.dto.WorkoutSessionRequest;
 import com.papis.gymtracker.dto.WorkoutSessionResponse;
+import com.papis.gymtracker.exception.ResourceNotFoundException;
+import com.papis.gymtracker.exception.UnauthorizedException;
 import com.papis.gymtracker.model.Exercise;
 import com.papis.gymtracker.model.User;
 import com.papis.gymtracker.model.WorkoutEntry;
@@ -40,14 +42,14 @@ public class WorkoutService {
     public WorkoutSessionResponse addEntry(Long sessionId, WorkoutEntryRequest request){
         User user = userService.getCurrentUser();
         WorkoutSession session = workoutSessionRepository.findById(sessionId)
-                .orElseThrow(() -> new RuntimeException("Session not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Session not found"));
 
         if(!session.getUser().getId().equals(user.getId())){
-            throw new RuntimeException("You are not authorized to add an entry to this session");
+            throw new UnauthorizedException("You are not authorized to add an entry to this session");
         }
 
         Exercise exercise = exerciseRepository.findById(request.exerciseId())
-                .orElseThrow(() -> new RuntimeException("Exercise not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Exercise not found"));
 
         WorkoutEntry workoutEntry = WorkoutEntry.builder()
                         .session(session)
@@ -74,7 +76,7 @@ public class WorkoutService {
 
         return workoutSessionRepository.findByUserIdAndId(user.getId(), id)
                 .map(WorkoutSessionResponse::from)
-                .orElseThrow(() -> new RuntimeException("Session not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Session not found"));
     }
 
     @Transactional
@@ -83,7 +85,7 @@ public class WorkoutService {
 
         int count = workoutSessionRepository.deleteByUserIdAndId(user.getId(), id);
         if(count == 0){
-            throw new RuntimeException("Session not found");
+            throw new ResourceNotFoundException("Session not found");
         }
     }
 
@@ -92,12 +94,12 @@ public class WorkoutService {
         User user = userService.getCurrentUser();
 
         WorkoutSession session = workoutSessionRepository.findByUserIdAndId(user.getId(), sessionId)
-                .orElseThrow(() -> new RuntimeException("Session not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Session not found"));
 
         int count = workoutEntryRepository.deleteByIdAndSessionId(entryId, session.getId());
 
         if(count == 0){
-            throw new RuntimeException("Entry not found");
+            throw new ResourceNotFoundException("Entry not found");
         }
     }
 
@@ -105,13 +107,13 @@ public class WorkoutService {
         User user = userService.getCurrentUser();
 
         WorkoutSession session = workoutSessionRepository.findByUserIdAndId(user.getId(), sessionId)
-                .orElseThrow(() -> new RuntimeException("Session not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Session not found"));
 
         WorkoutEntry entry = workoutEntryRepository.findById(entryId)
-                .orElseThrow(() -> new RuntimeException("Entry not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Entry not found"));
 
         if(!entry.getSession().getId().equals(session.getId())){
-            throw new RuntimeException("You are not authorized to update this entry");
+            throw new UnauthorizedException("You are not authorized to update this entry");
         }
 
         entry.setSets(request.sets());

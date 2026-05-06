@@ -1,7 +1,8 @@
 package com.papis.gymtracker.service;
 
 import com.papis.gymtracker.dto.ExerciseResponse;
-import com.papis.gymtracker.model.Exercise;
+import com.papis.gymtracker.exception.BadRequestException;
+import com.papis.gymtracker.exception.ResourceNotFoundException;
 import com.papis.gymtracker.model.enums.Category;
 import com.papis.gymtracker.model.enums.Equipment;
 import com.papis.gymtracker.model.enums.Level;
@@ -25,7 +26,7 @@ public class ExerciseService {
     public ExerciseResponse getExerciseById(String id){
         return exerciseRepository.findById(id)
                 .map(ExerciseResponse::from)
-                .orElseThrow(() -> new RuntimeException("Exercise not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Exercise not found"));
     }
 
     public List<ExerciseResponse> getExercisesByMuscleGroup(String muscleGroup){
@@ -43,7 +44,7 @@ public class ExerciseService {
                     .map(ExerciseResponse::from)
                     .toList();
         }catch(IllegalArgumentException e){
-            throw new RuntimeException("Invalid level provided: " + level);
+            throw new BadRequestException("Invalid level provided: " + level);
         }
 
     }
@@ -56,7 +57,7 @@ public class ExerciseService {
                     .map(ExerciseResponse::from)
                     .toList();
         }catch (IllegalArgumentException e){
-        throw new RuntimeException("Invalid equipment provided: " + equipment);
+        throw new BadRequestException("Invalid equipment provided: " + equipment);
         }
     }
 
@@ -68,7 +69,7 @@ public class ExerciseService {
                     .map(ExerciseResponse::from)
                     .toList();
         }catch (IllegalArgumentException e){
-            throw new RuntimeException("Invalid category provided: " + category);
+            throw new BadRequestException("Invalid category provided: " + category);
         }
 
     }

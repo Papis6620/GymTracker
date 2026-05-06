@@ -4,6 +4,8 @@ import com.papis.gymtracker.config.JwtService;
 import com.papis.gymtracker.dto.AuthenticationRequest;
 import com.papis.gymtracker.dto.AuthenticationResponse;
 import com.papis.gymtracker.dto.RegisterRequest;
+import com.papis.gymtracker.exception.ConflictException;
+import com.papis.gymtracker.exception.ResourceNotFoundException;
 import com.papis.gymtracker.model.User;
 import com.papis.gymtracker.model.enums.Role;
 import com.papis.gymtracker.repository.UserRepository;
@@ -23,7 +25,7 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest request){
         if(userRepository.findByEmail(request.email()).isPresent())
-            throw new RuntimeException("Email already in use");
+            throw new ConflictException("Email already in use");
 
         var user = User.builder()
                 .email(request.email())
@@ -41,7 +43,7 @@ public class AuthenticationService {
                 new UsernamePasswordAuthenticationToken(request.email(), request.password())
         );
         var user = userRepository.findByEmail(request.email())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         var token = jwtService.generateToken(user.getEmail());
         return new AuthenticationResponse(token);
     }

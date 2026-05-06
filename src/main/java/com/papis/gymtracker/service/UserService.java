@@ -2,6 +2,8 @@ package com.papis.gymtracker.service;
 
 import com.papis.gymtracker.dto.ChangePasswordRequest;
 import com.papis.gymtracker.dto.UpdateProfileRequest;
+import com.papis.gymtracker.exception.InvalidCredentialsException;
+import com.papis.gymtracker.exception.ResourceNotFoundException;
 import com.papis.gymtracker.model.User;
 import com.papis.gymtracker.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +20,7 @@ public class UserService {
     public User getCurrentUser(){
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
     public User updateDisplayName(UpdateProfileRequest request){
@@ -30,7 +32,7 @@ public class UserService {
     public void changePassword(ChangePasswordRequest request){
         User user = getCurrentUser();
         if(!passwordEncoder.matches(request.currentPassword(), user.getPassword())){
-            throw new RuntimeException("Current password is incorrect");
+            throw new InvalidCredentialsException("Current password is incorrect");
         }
         user.setPassword(passwordEncoder.encode(request.newPassword()));
         userRepository.save(user);
