@@ -1,7 +1,6 @@
 package com.papis.gymtracker.repository;
 
 import com.papis.gymtracker.model.Exercise;
-import com.papis.gymtracker.model.MuscleGroup;
 import com.papis.gymtracker.model.enums.Category;
 import com.papis.gymtracker.model.enums.Equipment;
 import com.papis.gymtracker.model.enums.Level;

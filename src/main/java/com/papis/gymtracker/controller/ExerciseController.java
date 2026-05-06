@@ -1,9 +1,6 @@
 package com.papis.gymtracker.controller;
 
 import com.papis.gymtracker.dto.ExerciseResponse;
-import com.papis.gymtracker.model.enums.Category;
-import com.papis.gymtracker.model.enums.Equipment;
-import com.papis.gymtracker.model.enums.Level;
 import com.papis.gymtracker.service.ExerciseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
