@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,7 +18,7 @@ public class PersonalRecordService {
     private final WorkoutEntryRepository workoutEntryRepository;
     private final UserService userService;
 
-    public PersonalRecordResponse getExerciseRecord(String exerciseId){
+    public Optional<PersonalRecordResponse> getExerciseRecord(String exerciseId){
         User user = userService.getCurrentUser();
 
         List<WorkoutEntry> entries = workoutEntryRepository.findByExerciseIdAndSessionUserId(exerciseId, user.getId());
@@ -33,7 +34,8 @@ public class PersonalRecordService {
                 .values()
                 .stream()
                 .map(PersonalRecordResponse::from)
-                .filter(Objects::nonNull)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .toList();
     }
 }

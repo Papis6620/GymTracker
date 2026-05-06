@@ -21,7 +21,8 @@ public class PersonalRecordController {
     public PersonalRecordResponse getExerciseRecord(
             @PathVariable String exerciseId
     ){
-        return personalRecordService.getExerciseRecord(exerciseId);
+        return personalRecordService.getExerciseRecord(exerciseId)
+                .orElseThrow(() -> new RuntimeException("Record not found"));
     }
 
     @GetMapping

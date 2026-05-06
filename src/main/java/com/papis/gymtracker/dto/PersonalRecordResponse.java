@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public record PersonalRecordResponse(
         String exerciseId,
@@ -16,8 +17,8 @@ public record PersonalRecordResponse(
         Integer bestVolumeReps,
         LocalDate achievedOnBestVolume
 ) {
-    public static PersonalRecordResponse from(List<WorkoutEntry> entries){
-        if(entries.isEmpty()) return null;
+    public static Optional<PersonalRecordResponse> from(List<WorkoutEntry> entries){
+        if(entries.isEmpty()) return Optional.empty();
 
         WorkoutEntry best1RMEntry = null;
         BigDecimal best1RM = BigDecimal.ZERO;
@@ -44,10 +45,10 @@ public record PersonalRecordResponse(
             }
         }
 
-        if (best1RMEntry == null) return null;
-        if (bestVolumeEntry == null) return null;
+        if (best1RMEntry == null) return Optional.empty();
+        if (bestVolumeEntry == null) return Optional.empty();
 
-        return new PersonalRecordResponse(
+        return Optional.of(new PersonalRecordResponse(
                 best1RMEntry.getExercise().getId(),
                 best1RMEntry.getExercise().getName(),
                 best1RM.setScale(2, RoundingMode.HALF_UP),
@@ -55,6 +56,6 @@ public record PersonalRecordResponse(
                 bestVolumeEntry.getWeightKg(),
                 bestVolumeEntry.getReps(),
                 bestVolumeEntry.getSession().getSessionDate()
-        );
+        ));
     }
 }
